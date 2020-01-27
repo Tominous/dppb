@@ -26,8 +26,8 @@ class DataHandler:
         formatted_data = [dict(),dict(),dict(),dict(),dict(),dict(),dict()]
 
         for i in range(0,len(json_data)):
-            for i in range(0,len(json_data[i])):
-                pass
+            for k in range(0,len(json_data[i])):
+                formatted_data[k] = {}
             
 
         return formatted_data
