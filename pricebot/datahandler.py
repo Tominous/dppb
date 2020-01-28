@@ -6,10 +6,6 @@ import json
 class DataHandler:
     def __init__(self):
         self.api = API()
-
-    def init_data(self):
-        """Init the raw data from pcpartpicker api so that it can be formatted into json later"""
-            
         self.raw_data =[self.api.retrieve("cpu"), 
                         self.api.retrieve("video-card"), 
                         self.api.retrieve("power-supply"), 
@@ -27,19 +23,22 @@ class DataHandler:
             json_data[i] = json.loads(self.raw_data[i].to_json())[next(iter(json.loads(self.raw_data[i].to_json())))]
 
         #A list of dictionaries of a list of dictionaries
-        formatted_data = [{"cpu": []},
-                          {"gpu": []},
-                          {"psu": []},
-                          {"ram": []},
-                          {"mobo": []},
-                          {"hdd": []},
-                          {"case": []}]
+        formatted_data = {"cpu": [], 
+                          "gpu": [], 
+                          "psu": [], 
+                          "ram": [],
+                          "mobo": [],
+                          "hdd": [],
+                          "case": []}
 
         for i in range(0,len(json_data)):
-            formatted_data[i][next(iter(formatted_data[i]))].append({
+            formatted_data[next(iter(formatted_data))].append({
                                                                      (str(json_data[i]["brand"]) + " " + str(json_data[i]["model"])): 
                                                                       "$" + str(json_data[i]["price"][1])
                                                                    })
-            
-
         return formatted_data
+
+    def get_part_data(self, part):
+        """Retrieve the data on a particular part out of the mess that is the return of format_data
+           Parts must be cpu, gpu, psu, ram, mobo, hdd, or case"""
+        return self.format_data()[part]
