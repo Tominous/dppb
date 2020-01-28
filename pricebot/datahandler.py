@@ -1,6 +1,8 @@
 from pcpartpicker import API
 import json
 
+#TODO: Write tests for format_data ASAP
+
 class DataHandler:
     def __init__(self):
         self.api = API()
@@ -20,14 +22,18 @@ class DataHandler:
         """Convert self.raw_data into json, get the data we need, and return a list with the data on various parts"""
 
         json_data = [None, None, None, None, None, None, None]
-        for i in range(0,6):
-            json_data[i] = json.load(self.raw_data[i].to_json())
+        for i in range(0,len(self.raw_data)):
+            #A stupidly long oneliner to remove the unecessary object at the start of the json
+            json_data[i] = json.loads(self.raw_data[i].to_json())[next(iter(json.loads(self.raw_data[i].to_json())))]
 
+        #TODO: This format isn't gonna work. We need a list of lists of dictionaries
         formatted_data = [dict(),dict(),dict(),dict(),dict(),dict(),dict()]
 
         for i in range(0,len(json_data)):
             for k in range(0,len(json_data[i])):
-                formatted_data[k] = {}
+                formatted_data[i] = {"brand": json_data[k]["brand"],
+                                     "model": json_data[k]["model"],
+                                     "price": json_data[k]["price"][1]}
             
 
         return formatted_data
