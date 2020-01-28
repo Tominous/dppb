@@ -26,14 +26,20 @@ class DataHandler:
             #A stupidly long oneliner to remove the unecessary object at the start of the json
             json_data[i] = json.loads(self.raw_data[i].to_json())[next(iter(json.loads(self.raw_data[i].to_json())))]
 
-        #TODO: This format isn't gonna work. We need a list of lists of dictionaries
-        formatted_data = [dict(),dict(),dict(),dict(),dict(),dict(),dict()]
+        #A list of dictionaries of a list of dictionaries
+        formatted_data = [{"cpu": []},
+                          {"gpu": []},
+                          {"psu": []},
+                          {"ram": []},
+                          {"mobo": []},
+                          {"hdd": []},
+                          {"case": []}]
 
         for i in range(0,len(json_data)):
-            for k in range(0,len(json_data[i])):
-                formatted_data[i] = {"brand": json_data[k]["brand"],
-                                     "model": json_data[k]["model"],
-                                     "price": json_data[k]["price"][1]}
+            formatted_data[i][next(iter(formatted_data[i]))].append({
+                                                                     (str(json_data[i]["brand"]) + " " + str(json_data[i]["model"])): 
+                                                                      "$" + str(json_data[i]["price"][1])
+                                                                   })
             
 
         return formatted_data
