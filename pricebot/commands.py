@@ -1,19 +1,19 @@
 from discord.ext import commands
 import json
 
-bot = commands.Bot(command_prefix="!")
+bot = commands.Bot(command_prefix="!pricebot")
 bot.run(json.loads(open("../config/config.json", "r").read())["token"])
 
 @bot.command()
-async def getPartPrice(ctx, query):
+async def priceof(ctx, query):
     pass
 
 @bot.command()
-async def getTopPartPrices(ctx):
+async def top(ctx):
     pass
 
 @bot.command()
-async def listPartCategories(ctx):
+async def parts(ctx):
     await ctx.send('''Support parts are: 
                 Processor(cpu)
                 Graphics Processor(gpu)
